@@ -30,7 +30,9 @@ func (l *Listener) ProcessMarket(eventTypeId string, marketId string, strategies
 		listener := streaming.Listener{OutputChannel: outputChannel}
 		listener.AddMarketStream()
 
-		// todo strategy.start()
+		for _, strategy := range strategies {
+			strategy.Start()
+		}
 
 		go l.Trading.Historical.ParseHistoricalData(
 			file,
@@ -43,6 +45,8 @@ func (l *Listener) ProcessMarket(eventTypeId string, marketId string, strategies
 			}
 		}
 
-		// todo strategy.stop()
+		for _, strategy := range strategies {
+			strategy.Stop()
+		}
 	}
 }
