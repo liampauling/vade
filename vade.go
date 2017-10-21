@@ -11,15 +11,15 @@ type Listener struct {
 }
 
 
-func NewInstance(trading *gofair.Client) (*Listener, error) {
+func NewListener(trading *gofair.Client) (*Listener) {
 	i := &Listener{
 		Trading: trading,
 	}
-	return i, nil
+	return i
 }
 
 
-func (l *Listener) ProcessMarket(eventTypeId string, marketId string) {
+func (l *Listener) ProcessMarket(eventTypeId string, marketId string, strategies []Strategy) {
 
 	downloadFolder := DownloadZip(eventTypeId, marketId)
 	fileList := FileList(downloadFolder)
@@ -30,13 +30,19 @@ func (l *Listener) ProcessMarket(eventTypeId string, marketId string) {
 		listener := streaming.Listener{OutputChannel: outputChannel}
 		listener.AddMarketStream()
 
+		// todo strategy.start()
+
 		go l.Trading.Historical.ParseHistoricalData(
 			file,
 			listener,
 		)
 
-		for i := range outputChannel {
-			log.Println(i)
+		for marketBook := range outputChannel {
+			for _, strategy := range strategies {
+				strategy.ProcessMarketBook(marketBook)
+			}
 		}
+
+		// todo strategy.stop()
 	}
 }
