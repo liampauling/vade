@@ -8,7 +8,8 @@ import (
 
 type Listener struct {
 	Trading		*gofair.Client
-	Bucket	string
+	Bucket		string
+	Analytics	*Analytics
 }
 
 
@@ -17,6 +18,8 @@ func NewListener(trading *gofair.Client, bucket string) (*Listener) {
 		Trading: trading,
 		Bucket: bucket,
 	}
+	i.Analytics = new(Analytics)
+	i.Analytics.Markets = make(map[string]MarketAnalytics)
 	return i
 }
 
@@ -42,6 +45,9 @@ func (l *Listener) ProcessMarket(eventTypeId string, marketId string, strategies
 		)
 
 		for marketBook := range outputChannel {
+
+			l.Analytics.ProcessMarketBook(marketBook)
+
 			for _, strategy := range strategies {
 				strategy.ProcessMarketBook(marketBook)
 			}
