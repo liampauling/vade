@@ -1,10 +1,10 @@
 package vade
 
 import (
-	"os"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"os"
 	"log"
 	"path/filepath"
 	"io"
@@ -71,8 +71,7 @@ func unzip(src, dest string) error {
 	return nil
 }
 
-func DownloadZip(eventTypeId string, marketId string) string {
-	var bucket = "flumine"
+func DownloadZip(bucket string, eventTypeId string, marketId string) string {
 	var key = fmt.Sprintf("marketdata/streaming/%v/%v.zip", eventTypeId, marketId)
 	var downloadFileZip = fmt.Sprintf("/tmp/%v.zip", marketId)
 	var destinationFolder = fmt.Sprintf("/tmp/%v", marketId)

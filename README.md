@@ -1,4 +1,4 @@
-# vade
+# vāde
 High performance betfair backtester using golang
 
 ## use

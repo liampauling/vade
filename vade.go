@@ -2,18 +2,20 @@ package vade
 
 import (
 	"gofair"
-	"log"
 	"gofair/streaming"
+	"log"
 )
 
 type Listener struct {
 	Trading		*gofair.Client
+	Bucket	string
 }
 
 
-func NewListener(trading *gofair.Client) (*Listener) {
+func NewListener(trading *gofair.Client, bucket string) (*Listener) {
 	i := &Listener{
 		Trading: trading,
+		Bucket: bucket,
 	}
 	return i
 }
@@ -21,7 +23,7 @@ func NewListener(trading *gofair.Client) (*Listener) {
 
 func (l *Listener) ProcessMarket(eventTypeId string, marketId string, strategies []Strategy) {
 
-	downloadFolder := DownloadZip(eventTypeId, marketId)
+	downloadFolder := DownloadZip(l.Bucket, eventTypeId, marketId)
 	fileList := FileList(downloadFolder)
 	log.Println(fileList)
 
