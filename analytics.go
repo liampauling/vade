@@ -3,6 +3,7 @@ package vade
 import (
 	"gofair/streaming"
 	"log"
+	"fmt"
 )
 
 type Analytics struct {
@@ -31,5 +32,12 @@ type MarketAnalytics struct {
 }
 
 func (ma *MarketAnalytics) process(m streaming.MarketBook) {
+
+	for _, r := range m.Runners {
+		if r.SelectionId == 11180319 && len(r.EX.TradedVolume) > 0 {
+			fmt.Println(r.SelectionId, r.LastPriceTraded, r.EX.AvailableToBack[0], r.EX.AvailableToLay[0],
+				r.EX.TradedVolume)
+		}
+	}
 
 }
