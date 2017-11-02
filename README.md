@@ -26,7 +26,7 @@ func main() {
 		vade.RecordMarketBook{},
 	}
 
-	var f = []string{"1.135904788", "1.135904789"}
-	backtest.ProcessMarket(eventTypeId, marketId, strategies)
+	var fileList = []string{"1.135904788", "1.135904789"}
+	backtest.ProcessMarket(fileList, strategies)
 }
 ```
